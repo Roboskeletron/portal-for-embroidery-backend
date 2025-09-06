@@ -2,6 +2,7 @@ package ru.vsu.portalforembroidery.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.portalforembroidery.model.dto.FileDto;
@@ -15,7 +16,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.validation.Valid;
 import java.util.Map;
 
-@ApiIgnore
+//@ApiIgnore
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/files")
@@ -32,6 +33,14 @@ public class FileRestController {
     @GetMapping("/{id}")
     public FileViewDto getFile(@PathVariable final int id) {
         return fileService.getFileViewById(id);
+    }
+
+    @GetMapping("image/{id}")
+    public ResponseEntity<byte[]> getFileRaw(@PathVariable final int id) {
+        var fileDto = fileService.getRawFileById(id);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("image/" + fileDto.extension()))
+                .body(fileDto.file());
     }
 
     @PutMapping("/{id}")

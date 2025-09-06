@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import ru.vsu.portalforembroidery.model.dto.FileDto;
+import ru.vsu.portalforembroidery.model.dto.FileRawDto;
 import ru.vsu.portalforembroidery.model.dto.FileUpdateDto;
 import ru.vsu.portalforembroidery.model.dto.view.FileForListDto;
 import ru.vsu.portalforembroidery.model.dto.view.FileViewDto;
@@ -47,5 +48,7 @@ public interface FileMapper {
     void mergeFileEntityAndFileUpdateDto(@MappingTarget FileEntity entity, FileUpdateDto dto);
 
     List<FileForListDto> fileEntitiesToFileForListDtoList(Iterable<FileEntity> entities);
+
+    FileRawDto fileEntityToFileRawDto(FileEntity entity);
 
 }

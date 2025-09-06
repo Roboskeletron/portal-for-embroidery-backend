@@ -11,5 +11,6 @@ public class DesignForListDto {
 
     private final Integer id;
     private final String name;
+    private final Integer fileId;
 
 }

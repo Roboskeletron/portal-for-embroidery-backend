@@ -11,6 +11,7 @@ import ru.vsu.portalforembroidery.exception.EntityCreationException;
 import ru.vsu.portalforembroidery.exception.EntityNotFoundException;
 import ru.vsu.portalforembroidery.mapper.FileMapper;
 import ru.vsu.portalforembroidery.model.dto.FileDto;
+import ru.vsu.portalforembroidery.model.dto.FileRawDto;
 import ru.vsu.portalforembroidery.model.dto.FileUpdateDto;
 import ru.vsu.portalforembroidery.model.dto.view.FileForListDto;
 import ru.vsu.portalforembroidery.model.dto.view.FileViewDto;
@@ -145,6 +146,17 @@ public class FileServiceImpl implements FileService, PaginationService<FileForLi
         final long numberOfFiles = fileRepository.count();
         log.info("There have been found {} files.", numberOfFiles);
         return (int) numberOfFiles;
+    }
+
+    @Override
+    public FileRawDto getRawFileById(int id) {
+        final Optional<FileEntity> fileEntity = fileRepository.findById(id);
+        fileEntity.ifPresentOrElse(
+                (file) -> log.info("File with id = {} has been found.", file.getId()),
+                () -> log.warn("File hasn't been found."));
+
+        return fileEntity.map(fileMapper::fileEntityToFileRawDto)
+                .orElseThrow(() -> new EntityNotFoundException("File not found!"));
     }
 
 }
