@@ -23,7 +23,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.security.auth.message.AuthException;
 import javax.validation.Valid;
 
-@ApiIgnore
+//@ApiIgnore
 @Slf4j
 @AllArgsConstructor
 @RestController

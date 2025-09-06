@@ -3,11 +3,13 @@ package ru.vsu.portalforembroidery.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import ru.vsu.portalforembroidery.model.dto.DesignDto;
 import ru.vsu.portalforembroidery.model.dto.DesignUpdateDto;
 import ru.vsu.portalforembroidery.model.dto.view.DesignForListDto;
 import ru.vsu.portalforembroidery.model.dto.view.DesignViewDto;
 import ru.vsu.portalforembroidery.model.entity.DesignEntity;
+import ru.vsu.portalforembroidery.model.entity.FileEntity;
 
 import java.util.List;
 
@@ -32,6 +34,7 @@ public interface DesignMapper {
     @Mapping(target = "creatorDesigner.lastName", source = "creatorDesignerLastName")
     DesignEntity designViewDtoToDesignEntity(DesignViewDto dto);
 
+    @Mapping(target = "fileId", source = "files", qualifiedByName = "filesToFileId")
     DesignForListDto designEntityToDesignForListDto(DesignEntity entity);
 
     List<DesignViewDto> designEntitiesToDesignViewDtoList(Iterable<DesignEntity> entities);
@@ -40,4 +43,8 @@ public interface DesignMapper {
 
     void mergeDesignEntityAndDesignUpdateDto(@MappingTarget DesignEntity design, DesignUpdateDto designUpdateDto);
 
+    @Named("filesToFileId")
+    static Integer filesToFileId(List<FileEntity> files){
+        return files.stream().map(FileEntity::getId).findFirst().orElse(null);
+    }
 }
