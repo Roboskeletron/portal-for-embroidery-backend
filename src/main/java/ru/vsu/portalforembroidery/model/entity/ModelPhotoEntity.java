@@ -2,7 +2,7 @@ package ru.vsu.portalforembroidery.model.entity;
 
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

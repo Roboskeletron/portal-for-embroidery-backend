@@ -3,10 +3,10 @@ package ru.vsu.portalforembroidery.model.entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 @Getter

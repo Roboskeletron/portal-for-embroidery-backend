@@ -13,7 +13,7 @@ import ru.vsu.portalforembroidery.model.dto.view.PostForListDto;
 import ru.vsu.portalforembroidery.model.dto.view.ViewListPage;
 import ru.vsu.portalforembroidery.service.DesignerProfileService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Map;
 
 @RequiredArgsConstructor

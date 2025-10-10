@@ -4,7 +4,7 @@ import lombok.*;
 import ru.vsu.portalforembroidery.converter.PermissionConverter;
 import ru.vsu.portalforembroidery.model.Permission;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Getter
 @Setter

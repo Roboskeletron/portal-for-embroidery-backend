@@ -17,7 +17,6 @@ spring:
     properties:
       hibernate:
         default_schema: embroidery
-        dialect: org.hibernate.dialect.PostgreSQL10Dialect
   servlet:
     multipart:
       enabled: true

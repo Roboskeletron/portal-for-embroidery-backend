@@ -10,8 +10,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import ru.vsu.portalforembroidery.model.entity.PostEntity;
 
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import java.util.Objects;
 import java.util.stream.Stream;
 

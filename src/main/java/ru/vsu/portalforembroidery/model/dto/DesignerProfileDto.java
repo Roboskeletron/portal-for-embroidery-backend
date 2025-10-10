@@ -6,7 +6,7 @@ import lombok.*;
 import ru.vsu.portalforembroidery.annotation.DatetimeValid;
 import ru.vsu.portalforembroidery.annotation.ImageValid;
 
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 @Getter
 @Builder

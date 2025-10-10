@@ -2,8 +2,8 @@ package ru.vsu.portalforembroidery.converter;
 
 import ru.vsu.portalforembroidery.model.Permission;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
 public class PermissionConverter implements AttributeConverter<Permission, Integer> {

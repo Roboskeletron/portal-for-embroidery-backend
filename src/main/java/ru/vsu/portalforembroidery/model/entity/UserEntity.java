@@ -6,7 +6,7 @@ import ru.vsu.portalforembroidery.converter.RoleConverter;
 import ru.vsu.portalforembroidery.model.Provider;
 import ru.vsu.portalforembroidery.model.Role;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Getter
 @Setter

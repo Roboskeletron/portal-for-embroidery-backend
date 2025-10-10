@@ -3,8 +3,8 @@ package ru.vsu.portalforembroidery.annotation;
 import ru.vsu.portalforembroidery.validator.DesignerProfilePasswordMatchValidator;
 import ru.vsu.portalforembroidery.validator.UserPasswordMatchValidator;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented

@@ -3,7 +3,7 @@ package ru.vsu.portalforembroidery.model.entity;
 import lombok.*;
 import ru.vsu.portalforembroidery.model.JwtTokenType;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Getter
 @Setter
