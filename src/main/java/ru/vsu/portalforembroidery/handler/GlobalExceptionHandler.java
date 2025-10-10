@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import ru.vsu.portalforembroidery.exception.*;
 import ru.vsu.portalforembroidery.model.dto.ApiErrorDto;
 
-import javax.security.auth.message.AuthException;
+import jakarta.security.auth.message.AuthException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -96,62 +96,62 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiErrorDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @NonNull
-    @Override
-    protected ResponseEntity<Object> handleTypeMismatch(@NonNull final TypeMismatchException exception,
-                                                        @NonNull final HttpHeaders headers,
-                                                        @NonNull final HttpStatus status,
-                                                        @NonNull final WebRequest request) {
-        final ApiErrorDto apiErrorDto = ApiErrorDto.builder()
-                .status(String.valueOf(HttpStatus.BAD_REQUEST.value()))
-                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                .messages(List.of("Invalid variable parameter!"))
-                .build();
-        log.error(exception.getMessage(), exception);
-        return new ResponseEntity<>(apiErrorDto, HttpStatus.BAD_REQUEST);
-    }
+//    @NonNull
+//    @Override
+//    protected ResponseEntity<Object> handleTypeMismatch(@NonNull final TypeMismatchException exception,
+//                                                        @NonNull final HttpHeaders headers,
+//                                                        @NonNull final HttpStatus status,
+//                                                        @NonNull final WebRequest request) {
+//        final ApiErrorDto apiErrorDto = ApiErrorDto.builder()
+//                .status(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+//                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+//                .messages(List.of("Invalid variable parameter!"))
+//                .build();
+//        log.error(exception.getMessage(), exception);
+//        return new ResponseEntity<>(apiErrorDto, HttpStatus.BAD_REQUEST);
+//    }
 
-    @NonNull
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException exception,
-                                                                  @NonNull final HttpHeaders headers,
-                                                                  @NonNull final HttpStatus status,
-                                                                  @NonNull final WebRequest request) {
-        final List<String> details = exception.getBindingResult().getAllErrors().stream()
-                .map(ObjectError::getDefaultMessage)
-                .collect(Collectors.toList());
-        final ApiErrorDto apiErrorDto = ApiErrorDto.builder()
-                .status(String.valueOf(HttpStatus.BAD_REQUEST.value()))
-                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                .messages(details)
-                .build();
-        log.error(exception.getMessage(), exception);
-        return new ResponseEntity<>(apiErrorDto, HttpStatus.BAD_REQUEST);
-    }
+//    @NonNull
+//    @Override
+//    protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException exception,
+//                                                                  @NonNull final HttpHeaders headers,
+//                                                                  @NonNull final HttpStatus status,
+//                                                                  @NonNull final WebRequest request) {
+//        final List<String> details = exception.getBindingResult().getAllErrors().stream()
+//                .map(ObjectError::getDefaultMessage)
+//                .collect(Collectors.toList());
+//        final ApiErrorDto apiErrorDto = ApiErrorDto.builder()
+//                .status(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+//                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+//                .messages(details)
+//                .build();
+//        log.error(exception.getMessage(), exception);
+//        return new ResponseEntity<>(apiErrorDto, HttpStatus.BAD_REQUEST);
+//    }
 
-    @NonNull
-    @Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(final HttpMessageNotReadableException exception,
-                                                                  @NonNull final HttpHeaders headers,
-                                                                  @NonNull final HttpStatus status,
-                                                                  @NonNull final WebRequest request) {
-        final String invalidInputMessage = "Invalid input.";
-        final String exceptionMessage = Optional.ofNullable(exception.getRootCause())
-                .map(Throwable::getMessage)
-                .map(message -> message.split("at"))
-                .map(split -> split[0])
-                .map(String::trim)
-                .map(s -> s.isBlank() ? "Invalid input" : s)
-                .map(s -> s + ".")
-                .orElse(invalidInputMessage);
-
-        final ApiErrorDto apiErrorDto = ApiErrorDto.builder()
-                .status(String.valueOf(HttpStatus.BAD_REQUEST.value()))
-                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                .messages(List.of(exceptionMessage))
-                .build();
-        log.error(exception.getMessage(), exception);
-        return new ResponseEntity<>(apiErrorDto, HttpStatus.BAD_REQUEST);
-    }
+//    @NonNull
+//    @Override
+//    protected ResponseEntity<Object> handleHttpMessageNotReadable(final HttpMessageNotReadableException exception,
+//                                                                  @NonNull final HttpHeaders headers,
+//                                                                  @NonNull final HttpStatus status,
+//                                                                  @NonNull final WebRequest request) {
+//        final String invalidInputMessage = "Invalid input.";
+//        final String exceptionMessage = Optional.ofNullable(exception.getRootCause())
+//                .map(Throwable::getMessage)
+//                .map(message -> message.split("at"))
+//                .map(split -> split[0])
+//                .map(String::trim)
+//                .map(s -> s.isBlank() ? "Invalid input" : s)
+//                .map(s -> s + ".")
+//                .orElse(invalidInputMessage);
+//
+//        final ApiErrorDto apiErrorDto = ApiErrorDto.builder()
+//                .status(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+//                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+//                .messages(List.of(exceptionMessage))
+//                .build();
+//        log.error(exception.getMessage(), exception);
+//        return new ResponseEntity<>(apiErrorDto, HttpStatus.BAD_REQUEST);
+//    }
 
 }

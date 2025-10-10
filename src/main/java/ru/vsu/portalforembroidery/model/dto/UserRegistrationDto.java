@@ -7,7 +7,7 @@ import ru.vsu.portalforembroidery.annotation.PasswordMatch;
 import ru.vsu.portalforembroidery.annotation.PasswordValid;
 import ru.vsu.portalforembroidery.annotation.UsernameValid;
 
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 @PasswordMatch
 @Getter

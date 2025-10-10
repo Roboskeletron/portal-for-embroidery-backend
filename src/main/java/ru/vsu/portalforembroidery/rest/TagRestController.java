@@ -9,7 +9,7 @@ import ru.vsu.portalforembroidery.model.dto.view.TagViewDto;
 import ru.vsu.portalforembroidery.model.dto.view.ViewListPage;
 import ru.vsu.portalforembroidery.service.TagService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Map;
 
 @RequiredArgsConstructor

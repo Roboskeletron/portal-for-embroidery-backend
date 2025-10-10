@@ -1,12 +1,8 @@
 package ru.vsu.portalforembroidery.model.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Where;
-
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Getter
 @Setter
@@ -24,5 +20,4 @@ public class LikeEntity {
 
     @Column(name = "is_deleted")
     private boolean deleted;
-
 }

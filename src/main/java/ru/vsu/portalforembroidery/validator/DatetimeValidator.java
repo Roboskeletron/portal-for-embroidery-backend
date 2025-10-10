@@ -2,8 +2,8 @@ package ru.vsu.portalforembroidery.validator;
 
 import ru.vsu.portalforembroidery.annotation.DatetimeValid;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;

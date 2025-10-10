@@ -10,7 +10,7 @@ import ru.vsu.portalforembroidery.model.dto.UserRegistrationDto;
 import ru.vsu.portalforembroidery.model.dto.view.*;
 import ru.vsu.portalforembroidery.service.UserService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Map;
 
 @RequiredArgsConstructor

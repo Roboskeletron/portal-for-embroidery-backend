@@ -3,8 +3,8 @@ package ru.vsu.portalforembroidery.validator;
 import org.passay.*;
 import ru.vsu.portalforembroidery.annotation.PasswordValid;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.List;
 

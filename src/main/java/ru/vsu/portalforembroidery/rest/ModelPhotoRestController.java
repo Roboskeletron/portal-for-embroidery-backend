@@ -10,7 +10,7 @@ import ru.vsu.portalforembroidery.model.dto.view.ModelPhotoViewDto;
 import ru.vsu.portalforembroidery.model.dto.view.ViewListPage;
 import ru.vsu.portalforembroidery.service.ModelPhotoService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Map;
 
 @RequiredArgsConstructor

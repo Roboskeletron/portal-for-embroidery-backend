@@ -3,8 +3,8 @@ package ru.vsu.portalforembroidery.validator;
 import org.springframework.beans.factory.annotation.Value;
 import ru.vsu.portalforembroidery.annotation.ImageValid;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;

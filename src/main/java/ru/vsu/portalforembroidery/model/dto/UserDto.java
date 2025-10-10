@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.*;
 import ru.vsu.portalforembroidery.annotation.ImageValid;
 
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 @Getter
 @Builder

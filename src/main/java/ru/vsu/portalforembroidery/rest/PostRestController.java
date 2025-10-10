@@ -11,7 +11,7 @@ import ru.vsu.portalforembroidery.model.dto.TagDto;
 import ru.vsu.portalforembroidery.model.dto.view.*;
 import ru.vsu.portalforembroidery.service.PostService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 

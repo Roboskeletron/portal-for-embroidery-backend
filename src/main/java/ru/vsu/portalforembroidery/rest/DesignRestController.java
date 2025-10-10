@@ -9,7 +9,7 @@ import ru.vsu.portalforembroidery.model.dto.DesignUpdateDto;
 import ru.vsu.portalforembroidery.model.dto.view.*;
 import ru.vsu.portalforembroidery.service.DesignService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Map;
 
 @RequiredArgsConstructor

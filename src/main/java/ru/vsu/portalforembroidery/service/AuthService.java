@@ -4,7 +4,7 @@ import ru.vsu.portalforembroidery.model.dto.UserDetailsDto;
 import ru.vsu.portalforembroidery.model.response.JwtResponse;
 import ru.vsu.portalforembroidery.model.response.LoginResponse;
 
-import javax.security.auth.message.AuthException;
+import jakarta.security.auth.message.AuthException;
 
 public interface AuthService {
 

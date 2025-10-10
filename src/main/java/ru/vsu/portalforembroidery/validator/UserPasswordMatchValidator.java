@@ -3,8 +3,8 @@ package ru.vsu.portalforembroidery.validator;
 import ru.vsu.portalforembroidery.annotation.PasswordMatch;
 import ru.vsu.portalforembroidery.model.dto.UserRegistrationDto;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class UserPasswordMatchValidator implements ConstraintValidator<PasswordMatch, UserRegistrationDto> {
 
