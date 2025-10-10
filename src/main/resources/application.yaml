@@ -16,7 +16,7 @@ spring:
     show-sql: false
     properties:
       hibernate:
-        default_schema: ${DB_SCHEMA:embroidery}
+        default_schema: embroidery
   servlet:
     multipart:
       enabled: true

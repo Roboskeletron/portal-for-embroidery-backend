@@ -63,7 +63,6 @@ services:
       DB_NAME: ${DB_NAME:-portal-for-embroidery}
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
-      DB_SCHEMA: ${DB_SCHEMA:-portal-for-embroidery}
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: http://keycloak:8080/realms/${KEYCLOAK_REALM:-portal-for-embroidery}
     depends_on:
       postgres:
