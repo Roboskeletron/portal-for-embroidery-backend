@@ -1,3 +1,22 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
 spring:
-  profiles:
-    active: local
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  liquibase:
+    change-log: classpath:db.migration.v1/changelog.yaml
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        default_schema: embroidery
+  servlet:
+    multipart:
+      enabled: true
