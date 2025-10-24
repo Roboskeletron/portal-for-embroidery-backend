@@ -5,3 +5,5 @@ databaseChangeLog:
   - include:
       file: 1.0/_changelog-cumulative.yaml
       relativeToChangelogFile: true
+  - include:
+      file: db.migration.v1/2.0/PPE-002-20252410.sql

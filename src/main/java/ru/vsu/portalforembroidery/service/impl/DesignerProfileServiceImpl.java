@@ -62,7 +62,6 @@ public class DesignerProfileServiceImpl implements DesignerProfileService, Pagin
                 .map(designerProfile -> {
                     designerProfile.setImage(new byte[0]);
                     designerProfile.setRole(Role.DESIGNER);
-                    designerProfile.setProvider(provider);
                     return designerProfileRepository.save(designerProfile);
                 })
                 .orElseThrow(() -> new EntityCreationException("Designer Profile not created!"));

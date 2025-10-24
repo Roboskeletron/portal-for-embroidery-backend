@@ -8,6 +8,7 @@ import ru.vsu.portalforembroidery.model.entity.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
@@ -22,4 +23,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     boolean existsByEmail(String email);
 
+    Optional<UserEntity> findByExternalId(UUID externalId);
 }

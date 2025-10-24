@@ -29,7 +29,7 @@ public interface DesignerProfileMapper {
 
     DesignerProfileEntity designerProfileViewDtoToDesignerProfileEntity(DesignerProfileViewDto dto);
 
-    @Mapping(target = "password", source = "password")
+//    @Mapping(target = "password", source = "password")
     DesignerProfileEntity designerRegistrationProfileViewDtoToDesignerProfileEntityWithPassword(DesignerProfileRegistrationDto dto, String password);
 
     @Mapping(target = "image", source = "base64StringImage", qualifiedByName = "base64StringImage")

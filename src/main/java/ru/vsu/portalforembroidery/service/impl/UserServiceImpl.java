@@ -51,38 +51,26 @@ public class UserServiceImpl implements UserService, PaginationService<UserForLi
     private final PostMapper postMapper;
     private final UserMapper userMapper;
 
-    @Override
-    @Transactional
-    public int createUser(UserRegistrationDto userRegistrationDto, Provider provider) {
-        if (userRepository.findByEmail(userRegistrationDto.getEmail()).isPresent()) {
-            log.warn("User with email = {} hasn't been created. Such user already exists!", userRegistrationDto.getEmail());
-            throw new EntityAlreadyExistsException("User already exists in the database!");
-        }
-        final String password = passwordEncoder.encode(userRegistrationDto.getPassword());
-        final UserEntity userEntity = Optional.of(userRegistrationDto)
-                .map(user -> userMapper.userRegistrationDtoToUserEntityWithPassword(user, password))
-                .map(user -> {
-                    user.setImage(new byte[0]);
-                    user.setRole(Role.of(userRegistrationDto.getRoleId())
-                            .orElseThrow(() -> new EntityCreationException("User not created!")));
-                    user.setProvider(provider);
-                    return userRepository.save(user);
-                })
-                .orElseThrow(() -> new EntityCreationException("User not created!"));
-        log.info("User with id = {} has been created.", userEntity.getId());
-        return userEntity.getId();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public UserDto getUserById(int id) {
-        final Optional<UserEntity> userEntity = userRepository.findById(id);
-        userEntity.ifPresentOrElse(
-                (user) -> log.info("User with id = {} has been found.", user.getId()),
-                () -> log.warn("User with id = {} hasn't been found.", id));
-        return userEntity.map(userMapper::userEntityToUserDto)
-                .orElseThrow(() -> new EntityNotFoundException("User not found!"));
-    }
+//    @Override
+//    @Transactional
+//    public int createUser(UserRegistrationDto userRegistrationDto, Provider provider) {
+//        if (userRepository.findByEmail(userRegistrationDto.getEmail()).isPresent()) {
+//            log.warn("User with email = {} hasn't been created. Such user already exists!", userRegistrationDto.getEmail());
+//            throw new EntityAlreadyExistsException("User already exists in the database!");
+//        }
+//        final String password = passwordEncoder.encode(userRegistrationDto.getPassword());
+//        final UserEntity userEntity = Optional.of(userRegistrationDto)
+//                .map(userMapper::userRegistrationDtoToUserEntityWithPassword)
+//                .map(user -> {
+//                    user.setImage(new byte[0]);
+//                    user.setRole(Role.of(userRegistrationDto.getRoleId())
+//                            .orElseThrow(() -> new EntityCreationException("User not created!")));
+//                    return userRepository.save(user);
+//                })
+//                .orElseThrow(() -> new EntityCreationException("User not created!"));
+//        log.info("User with id = {} has been created.", userEntity.getId());
+//        return userEntity.getId();
+//    }
 
     @Override
     @Transactional(readOnly = true)
@@ -93,48 +81,6 @@ public class UserServiceImpl implements UserService, PaginationService<UserForLi
                 () -> log.warn("User with id = {} hasn't been found.", id));
         return userEntity.map(userMapper::userEntityToUserViewDto)
                 .orElseThrow(() -> new EntityNotFoundException("User not found!"));
-    }
-
-    @Override
-    public UserDetailsDto getUserDetailsById(int id) {
-        final Optional<UserEntity> userEntity = userRepository.findById(id);
-        userEntity.ifPresentOrElse(
-                (user) -> log.info("User with id = {} has been found.", user.getId()),
-                () -> log.warn("User with id = {} hasn't been found.", id));
-        return userEntity.map(userMapper::userEntityToUserDetailsDto)
-                .orElseThrow(() -> new EntityNotFoundException("User not found!"));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public int getUserIdByEmail(String email) {
-        final Optional<UserEntity> userEntity = userRepository.findByEmail(email);
-        userEntity.ifPresentOrElse(
-                (user) -> log.info("User with email = {} has been found.", email),
-                () -> log.warn("User with email = {} hasn't been found.", email));
-        return userEntity.map(userMapper::userEntityToUserDetailsDto)
-                .orElseThrow(() -> new EntityNotFoundException("User not found!")).getId();
-    }
-
-    @Override
-    public UserDetailsDto getUserByEmail(String email) {
-        final Optional<UserEntity> userEntity = userRepository.findByEmail(email);
-        userEntity.ifPresentOrElse(
-                (user) -> log.info("User for email = {} with id = {} has been found.", email, user.getId()),
-                () -> log.warn("User for email = {} hasn't been found.", email));
-        return userMapper.userEntityToUserDetailsDto(userEntity.orElseThrow(
-                () -> new UsernameNotFoundException("No such user in the database!")));
-    }
-
-    @Override
-    public boolean existsByUserEmail(String email) {
-        if (userRepository.existsByEmail(email)) {
-            log.info("User with email = {} exists.", email);
-            return true;
-        } else {
-            log.warn("User with email = {} doesn't exist.", email);
-            return false;
-        }
     }
 
     @Override

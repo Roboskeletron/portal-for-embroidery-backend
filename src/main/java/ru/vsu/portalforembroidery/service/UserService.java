@@ -7,24 +7,16 @@ import ru.vsu.portalforembroidery.model.dto.UserDetailsDto;
 import ru.vsu.portalforembroidery.model.dto.UserDto;
 import ru.vsu.portalforembroidery.model.dto.UserRegistrationDto;
 import ru.vsu.portalforembroidery.model.dto.view.*;
+import ru.vsu.portalforembroidery.model.entity.UserEntity;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
 
-    int createUser(UserRegistrationDto userRegistrationDto, Provider provider) throws EntityAlreadyExistsException;
-
-    UserDto getUserById(int id);
+//    int createUser(UserRegistrationDto userRegistrationDto, Provider provider) throws EntityAlreadyExistsException;
 
     UserViewDto getUserViewById(int id);
-
-    UserDetailsDto getUserDetailsById(int id);
-
-    int getUserIdByEmail(String email);
-
-    UserDetailsDto getUserByEmail(String email);
-
-    boolean existsByUserEmail(String email);
 
     void updateUserById(int id, UserDto userDto);
 
@@ -45,5 +37,4 @@ public interface UserService {
     List<UserForListDto> listDesigners();
 
     List<PostForListDto> listPosts(int userId, Pageable pageable, String tagName);
-
 }

@@ -3,6 +3,7 @@ package ru.vsu.portalforembroidery.rest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.portalforembroidery.model.Provider;
 import ru.vsu.portalforembroidery.model.dto.UserDto;
@@ -20,20 +21,20 @@ public class UserRestController {
 
     private final UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<Integer> register(@RequestBody @Valid final UserRegistrationDto userRegistrationDto) {
-        final int id = userService.createUser(userRegistrationDto, Provider.LOCAL);
-        return new ResponseEntity<>(id, HttpStatus.CREATED);
-    }
-
-    @PostMapping
-    public ResponseEntity<Integer> createUser(@RequestBody @Valid final UserRegistrationDto userRegistrationDto) {
-        final int id = userService.createUser(userRegistrationDto, Provider.LOCAL);
-        return new ResponseEntity<>(id, HttpStatus.CREATED);
-    }
+//    @PostMapping("/register")
+//    public ResponseEntity<Integer> register(@RequestBody @Valid final UserRegistrationDto userRegistrationDto) {
+//        final int id = userService.createUser(userRegistrationDto, Provider.LOCAL);
+//        return new ResponseEntity<>(id, HttpStatus.CREATED);
+//    }
+//
+//    @PostMapping
+//    public ResponseEntity<Integer> createUser(@RequestBody @Valid final UserRegistrationDto userRegistrationDto) {
+//        final int id = userService.createUser(userRegistrationDto, Provider.LOCAL);
+//        return new ResponseEntity<>(id, HttpStatus.CREATED);
+//    }
 
     @GetMapping("/{id}")
-    public UserViewDto getUser(@PathVariable final int id) {
+    public UserViewDto getUser(@PathVariable final int id, @AuthenticationPrincipal final  Object principal) {
         return userService.getUserViewById(id);
     }
 
