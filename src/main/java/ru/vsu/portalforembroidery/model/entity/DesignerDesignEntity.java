@@ -1,7 +1,6 @@
 package ru.vsu.portalforembroidery.model.entity;
 
 import lombok.*;
-import ru.vsu.portalforembroidery.converter.PermissionConverter;
 import ru.vsu.portalforembroidery.model.Permission;
 
 import jakarta.persistence.*;
@@ -30,7 +29,7 @@ public class DesignerDesignEntity {
     private DesignEntity design;
 
     @Column(name = "permission_id")
-    @Convert(converter = PermissionConverter.class)
+    @Enumerated(EnumType.ORDINAL)
     private Permission permission;
 
 }

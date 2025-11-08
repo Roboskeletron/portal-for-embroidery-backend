@@ -39,8 +39,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {
-            EntityCreationException.class, EntityAlreadyExistsException.class, UserCanNotBeDeletedException.class,
-            ParseInputException.class, DecodeJwtTokenException.class
+            EntityCreationException.class, EntityAlreadyExistsException.class, UserCanNotBeDeletedException.class
     })
     public ResponseEntity<ApiErrorDto> badRequestException(final RuntimeException runtimeException) {
         final ApiErrorDto apiErrorDto = ApiErrorDto.builder()

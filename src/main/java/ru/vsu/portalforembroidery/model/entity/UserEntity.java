@@ -2,11 +2,11 @@ package ru.vsu.portalforembroidery.model.entity;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import ru.vsu.portalforembroidery.converter.RoleConverter;
-import ru.vsu.portalforembroidery.model.Provider;
 import ru.vsu.portalforembroidery.model.Role;
 
 import jakarta.persistence.*;
+
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -43,14 +43,11 @@ public class UserEntity {
     private String email;
 
     @Column(name = "role_id")
-    @Convert(converter = RoleConverter.class)
+//    @Convert(converter = RoleConverter.class)
+    @Enumerated(EnumType.ORDINAL)
     private Role role;
 
-    @Column(name = "provider")
-    @Enumerated(EnumType.STRING)
-    private Provider provider;
-
-    @Column(name = "password")
-    private String password;
+    @Column(name = "external_id")
+    private UUID externalId;
 
 }
