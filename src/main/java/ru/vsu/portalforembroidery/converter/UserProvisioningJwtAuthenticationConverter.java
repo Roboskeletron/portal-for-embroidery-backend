@@ -6,7 +6,6 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import ru.vsu.portalforembroidery.model.CustomPrincipal;
 import ru.vsu.portalforembroidery.model.Role;
 import ru.vsu.portalforembroidery.model.entity.UserEntity;

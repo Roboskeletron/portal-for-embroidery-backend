@@ -88,21 +88,11 @@ public class UserServiceImpl implements UserService, PaginationService<UserForLi
         final UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found!"));
 
-        final String username = userDto.getUsername();
-        if (!Objects.equals(username, userEntity.getUsername()) && userRepository.existsByUsername(username)) {
-            log.warn("User with username = {} hasn't been updated. Such username already exists in the database!", username);
-            throw new EntityAlreadyExistsException("Such username already exists!");
-        }
+        userMapper.mergeUserEntityAndUserDto(userEntity, userDto);
 
-        if (userDto.getBase64StringImage().isEmpty()) {
-            userMapper.mergeUserEntityAndUserDtoWithoutPicture(userEntity, userDto);
-            userRepository.save(userEntity);
-            log.info("User with id = {} has been updated without picture.", id);
-        } else {
-            userMapper.mergeUserEntityAndUserDto(userEntity, userDto);
-            userRepository.save(userEntity);
-            log.info("User with id = {} has been updated with picture.", id);
-        }
+        userRepository.save(userEntity);
+
+        log.info("User with id = {} has been updated.", id);
     }
 
     @Override

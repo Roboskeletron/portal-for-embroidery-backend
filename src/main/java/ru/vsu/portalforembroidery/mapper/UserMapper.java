@@ -1,13 +1,8 @@
 package ru.vsu.portalforembroidery.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import ru.vsu.portalforembroidery.model.Role;
-import ru.vsu.portalforembroidery.model.dto.UserDetailsDto;
 import ru.vsu.portalforembroidery.model.dto.UserDto;
-import ru.vsu.portalforembroidery.model.dto.UserRegistrationDto;
 import ru.vsu.portalforembroidery.model.dto.view.UserForListDto;
 import ru.vsu.portalforembroidery.model.dto.view.UserViewDto;
 import ru.vsu.portalforembroidery.model.entity.UserEntity;
@@ -15,13 +10,11 @@ import ru.vsu.portalforembroidery.model.entity.UserEntity;
 import java.util.Base64;
 import java.util.List;
 
-// TODO: 30.11.2022 протестировать role
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-
-    UserDto userEntityToUserDto(UserEntity entity);
-
     @Mapping(target = "base64StringImage", source = "image", qualifiedByName = "bytesArrayImage")
+    @Mapping(target = "experiencedSince", source = "designerProfile.experiencedSince")
+    @Mapping(target = "description", source = "designerProfile.description")
     UserViewDto userEntityToUserViewDto(UserEntity entity);
 
     @Named(value = "bytesArrayImage")
@@ -29,26 +22,28 @@ public interface UserMapper {
         return Base64.getEncoder().encodeToString(image);
     }
 
-    @Mapping(target = "roles", source = "role", qualifiedByName = "role")
-    UserDetailsDto userEntityToUserDetailsDto(UserEntity entity);
-
-    @Named(value = "role")
-    default List<Role> mapRoles(Role role) {
-        return List.of(role);
-    }
-
-    UserEntity userRegistrationDtoToUserEntityWithPassword(UserRegistrationDto dto, String password);
-
     @Mapping(target = "image", source = "base64StringImage", qualifiedByName = "base64StringImage")
+    @Mapping(target = "designerProfile", ignore = true)
     void mergeUserEntityAndUserDto(@MappingTarget UserEntity entity, UserDto dto);
 
     @Named(value = "base64StringImage")
     default byte[] mapBase64StringImage(String base64StringImage) {
+        if (base64StringImage.isEmpty()) {
+            return new byte[0];
+        }
+
         return Base64.getDecoder().decode(base64StringImage);
     }
 
-    void mergeUserEntityAndUserDtoWithoutPicture(@MappingTarget UserEntity entity, UserDto dto);
-
     List<UserForListDto> userEntitiesToUserForListDtoList(Iterable<UserEntity> entities);
 
+    @AfterMapping
+    default void handleDesignerProfile(@MappingTarget UserEntity userEntity, UserDto userDto) {
+        if (userEntity.getRole() != Role.DESIGNER) {
+            return;
+        }
+
+        userEntity.getDesignerProfile().setDescription(userDto.getDescription());
+        userEntity.getDesignerProfile().setExperiencedSince(userDto.getExperiencedSince());
+    }
 }
