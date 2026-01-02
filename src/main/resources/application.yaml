@@ -26,6 +26,8 @@ spring:
     password: ${DB_PASSWORD:postgres}
   liquibase:
     change-log: classpath:db.migration.v1/changelog.yaml
+    default-schema: embroidery
+    liquibase-schema: public
   jpa:
     hibernate:
       ddl-auto: validate

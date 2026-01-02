@@ -3,9 +3,7 @@ package ru.vsu.portalforembroidery.service;
 import org.springframework.data.domain.Pageable;
 import ru.vsu.portalforembroidery.exception.EntityAlreadyExistsException;
 import ru.vsu.portalforembroidery.model.Provider;
-import ru.vsu.portalforembroidery.model.dto.UserDetailsDto;
-import ru.vsu.portalforembroidery.model.dto.UserDto;
-import ru.vsu.portalforembroidery.model.dto.UserRegistrationDto;
+import ru.vsu.portalforembroidery.model.dto.*;
 import ru.vsu.portalforembroidery.model.dto.view.*;
 import ru.vsu.portalforembroidery.model.entity.UserEntity;
 
@@ -13,8 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
-
-//    int createUser(UserRegistrationDto userRegistrationDto, Provider provider) throws EntityAlreadyExistsException;
+    void becomeDesigner(int id, BecomeDesignerDto becomeDesignerDto);
 
     UserViewDto getUserViewById(int id);
 

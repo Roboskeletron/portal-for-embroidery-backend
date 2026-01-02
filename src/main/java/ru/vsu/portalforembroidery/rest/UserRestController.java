@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import ru.vsu.portalforembroidery.model.CustomPrincipal;
 import ru.vsu.portalforembroidery.model.Provider;
+import ru.vsu.portalforembroidery.model.dto.BecomeDesignerDto;
+import ru.vsu.portalforembroidery.model.dto.DesignerProfileDto;
 import ru.vsu.portalforembroidery.model.dto.UserDto;
 import ru.vsu.portalforembroidery.model.dto.UserRegistrationDto;
 import ru.vsu.portalforembroidery.model.dto.view.*;
@@ -32,6 +35,13 @@ public class UserRestController {
 //        final int id = userService.createUser(userRegistrationDto, Provider.LOCAL);
 //        return new ResponseEntity<>(id, HttpStatus.CREATED);
 //    }
+
+    @PostMapping("/become-designer")
+    public ResponseEntity<?> becomeDesigner(@Valid @RequestBody BecomeDesignerDto becomeDesignerDto, @AuthenticationPrincipal CustomPrincipal customPrincipal) {
+        userService.becomeDesigner(customPrincipal.id(), becomeDesignerDto);
+
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping("/{id}")
     public UserViewDto getUser(@PathVariable final int id, @AuthenticationPrincipal final  Object principal) {

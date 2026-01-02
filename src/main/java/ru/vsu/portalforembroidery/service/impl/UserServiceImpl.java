@@ -13,14 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.vsu.portalforembroidery.exception.EntityAlreadyExistsException;
 import ru.vsu.portalforembroidery.exception.EntityCreationException;
 import ru.vsu.portalforembroidery.exception.EntityNotFoundException;
+import ru.vsu.portalforembroidery.mapper.DesignerProfileMapper;
+import ru.vsu.portalforembroidery.mapper.FolderMapper;
 import ru.vsu.portalforembroidery.mapper.PostMapper;
 import ru.vsu.portalforembroidery.mapper.UserMapper;
 import ru.vsu.portalforembroidery.model.Provider;
 import ru.vsu.portalforembroidery.model.Role;
-import ru.vsu.portalforembroidery.model.dto.UserDetailsDto;
-import ru.vsu.portalforembroidery.model.dto.UserDto;
-import ru.vsu.portalforembroidery.model.dto.UserRegistrationDto;
+import ru.vsu.portalforembroidery.model.dto.*;
 import ru.vsu.portalforembroidery.model.dto.view.*;
+import ru.vsu.portalforembroidery.model.entity.DesignerProfileEntity;
 import ru.vsu.portalforembroidery.model.entity.PostEntity;
 import ru.vsu.portalforembroidery.model.entity.UserEntity;
 import ru.vsu.portalforembroidery.repository.PostRepository;
@@ -31,6 +32,7 @@ import ru.vsu.portalforembroidery.service.PostService;
 import ru.vsu.portalforembroidery.service.UserService;
 import ru.vsu.portalforembroidery.utils.ParseUtils;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
@@ -45,32 +47,24 @@ public class UserServiceImpl implements UserService, PaginationService<UserForLi
 
     private final PostService postService;
     private final FolderService folderService;
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final PostMapper postMapper;
     private final UserMapper userMapper;
+    private final DesignerProfileMapper designerProfileMapper;
 
-//    @Override
-//    @Transactional
-//    public int createUser(UserRegistrationDto userRegistrationDto, Provider provider) {
-//        if (userRepository.findByEmail(userRegistrationDto.getEmail()).isPresent()) {
-//            log.warn("User with email = {} hasn't been created. Such user already exists!", userRegistrationDto.getEmail());
-//            throw new EntityAlreadyExistsException("User already exists in the database!");
-//        }
-//        final String password = passwordEncoder.encode(userRegistrationDto.getPassword());
-//        final UserEntity userEntity = Optional.of(userRegistrationDto)
-//                .map(userMapper::userRegistrationDtoToUserEntityWithPassword)
-//                .map(user -> {
-//                    user.setImage(new byte[0]);
-//                    user.setRole(Role.of(userRegistrationDto.getRoleId())
-//                            .orElseThrow(() -> new EntityCreationException("User not created!")));
-//                    return userRepository.save(user);
-//                })
-//                .orElseThrow(() -> new EntityCreationException("User not created!"));
-//        log.info("User with id = {} has been created.", userEntity.getId());
-//        return userEntity.getId();
-//    }
+    @Override
+    @Transactional
+    public void becomeDesigner(int id, BecomeDesignerDto becomeDesignerDto) {
+        final var user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found!"));
+        user.setRole(Role.DESIGNER);
+
+        var designerProfile = designerProfileMapper.becomeDesignerDtoToDesignerProfileEntity(becomeDesignerDto);
+
+        user.setDesignerProfile(designerProfile);
+
+        userRepository.save(user);
+    }
 
     @Override
     @Transactional(readOnly = true)
