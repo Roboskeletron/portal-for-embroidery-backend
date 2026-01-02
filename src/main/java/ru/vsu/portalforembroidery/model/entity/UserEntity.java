@@ -52,4 +52,9 @@ public class UserEntity {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private DesignerProfileEntity designerProfile;
+
+    public void addDesignerProfile(DesignerProfileEntity designerProfile) {
+        this.designerProfile = designerProfile;
+        designerProfile.setUser(this);
+    }
 }

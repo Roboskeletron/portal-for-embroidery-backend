@@ -3,6 +3,7 @@ package ru.vsu.portalforembroidery.converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -35,7 +36,11 @@ public class UserProvisioningJwtAuthenticationConverter implements Converter<Jwt
         var authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()));
         var principal = new CustomPrincipal(user.getId(), user.getExternalId(), user.getRole());
 
-        return new JwtAuthenticationToken(jwt, authorities, principal.toString());
+        return new UsernamePasswordAuthenticationToken(
+                principal,
+                jwt,
+                authorities
+        );
     }
 
     private UserEntity createUser(UUID externalId, Jwt jwt) {

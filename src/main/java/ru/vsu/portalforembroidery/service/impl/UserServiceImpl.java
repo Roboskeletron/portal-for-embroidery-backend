@@ -57,11 +57,16 @@ public class UserServiceImpl implements UserService, PaginationService<UserForLi
     @Transactional
     public void becomeDesigner(int id, BecomeDesignerDto becomeDesignerDto) {
         final var user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found!"));
+
+        if (user.getRole() == Role.DESIGNER) {
+            return;
+        }
+
         user.setRole(Role.DESIGNER);
 
         var designerProfile = designerProfileMapper.becomeDesignerDtoToDesignerProfileEntity(becomeDesignerDto);
 
-        user.setDesignerProfile(designerProfile);
+        user.addDesignerProfile(designerProfile);
 
         userRepository.save(user);
     }
