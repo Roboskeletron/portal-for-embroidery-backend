@@ -3,27 +3,19 @@ package ru.vsu.portalforembroidery.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
-import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.vsu.portalforembroidery.exception.EntityAlreadyExistsException;
-import ru.vsu.portalforembroidery.exception.EntityCreationException;
 import ru.vsu.portalforembroidery.exception.EntityNotFoundException;
 import ru.vsu.portalforembroidery.mapper.DesignerProfileMapper;
-import ru.vsu.portalforembroidery.mapper.FolderMapper;
 import ru.vsu.portalforembroidery.mapper.PostMapper;
 import ru.vsu.portalforembroidery.mapper.UserMapper;
-import ru.vsu.portalforembroidery.model.Provider;
 import ru.vsu.portalforembroidery.model.Role;
 import ru.vsu.portalforembroidery.model.dto.*;
 import ru.vsu.portalforembroidery.model.dto.view.*;
-import ru.vsu.portalforembroidery.model.entity.DesignerProfileEntity;
 import ru.vsu.portalforembroidery.model.entity.PostEntity;
 import ru.vsu.portalforembroidery.model.entity.UserEntity;
 import ru.vsu.portalforembroidery.repository.PostRepository;
@@ -34,7 +26,6 @@ import ru.vsu.portalforembroidery.service.PostService;
 import ru.vsu.portalforembroidery.service.UserService;
 import ru.vsu.portalforembroidery.utils.ParseUtils;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
