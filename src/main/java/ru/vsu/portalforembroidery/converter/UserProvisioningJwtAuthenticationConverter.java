@@ -3,10 +3,10 @@ package ru.vsu.portalforembroidery.converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import ru.vsu.portalforembroidery.model.CustomPrincipal;
 import ru.vsu.portalforembroidery.model.Role;
 import ru.vsu.portalforembroidery.model.entity.UserEntity;
 import ru.vsu.portalforembroidery.repository.UserRepository;
@@ -24,19 +24,22 @@ public class UserProvisioningJwtAuthenticationConverter implements Converter<Jwt
     private static final String USERNAME_NAME_CLAIM = "name";
 
     private final UserRepository userRepository;
-    private final JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
 
     @Override
     public AbstractAuthenticationToken convert(Jwt jwt) {
         var principalId = UUID.fromString(jwt.getSubject());
 
-        var c = userRepository.findByExternalId(principalId);
         var user = userRepository.findByExternalId(principalId)
                 .orElseGet(() -> createUser(principalId, jwt));
 
         var authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()));
+        var principal = new CustomPrincipal(user.getId(), user.getExternalId(), user.getRole());
 
-        return new JwtAuthenticationToken(jwt, authorities, principalId.toString());
+        return new UsernamePasswordAuthenticationToken(
+                principal,
+                jwt,
+                authorities
+        );
     }
 
     private UserEntity createUser(UUID externalId, Jwt jwt) {

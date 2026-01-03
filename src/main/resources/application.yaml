@@ -26,6 +26,8 @@ spring:
     password: ${DB_PASSWORD:postgres}
   liquibase:
     change-log: classpath:db.migration.v1/changelog.yaml
+    default-schema: embroidery
+    liquibase-schema: public
   jpa:
     hibernate:
       ddl-auto: validate
@@ -36,3 +38,8 @@ spring:
   servlet:
     multipart:
       enabled: true
+keycloak-admin:
+  server-url: ${KEYCLOAK_ADMIN_SERVER_URL:http://localhost}
+  realm: ${KEYCLOAK_ADMIN_REALM:portal-for-embroidery-local}
+  client-id: ${KEYCLOAK_ADMIN_CLIENT_ID}
+  client-secret: ${KEYCLOAK_ADMIN_CLIENT_SECRET}

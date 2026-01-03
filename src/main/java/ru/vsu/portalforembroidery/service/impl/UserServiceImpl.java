@@ -2,24 +2,19 @@ package ru.vsu.portalforembroidery.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.admin.client.Keycloak;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.vsu.portalforembroidery.exception.EntityAlreadyExistsException;
-import ru.vsu.portalforembroidery.exception.EntityCreationException;
 import ru.vsu.portalforembroidery.exception.EntityNotFoundException;
+import ru.vsu.portalforembroidery.mapper.DesignerProfileMapper;
 import ru.vsu.portalforembroidery.mapper.PostMapper;
 import ru.vsu.portalforembroidery.mapper.UserMapper;
-import ru.vsu.portalforembroidery.model.Provider;
 import ru.vsu.portalforembroidery.model.Role;
-import ru.vsu.portalforembroidery.model.dto.UserDetailsDto;
-import ru.vsu.portalforembroidery.model.dto.UserDto;
-import ru.vsu.portalforembroidery.model.dto.UserRegistrationDto;
+import ru.vsu.portalforembroidery.model.dto.*;
 import ru.vsu.portalforembroidery.model.dto.view.*;
 import ru.vsu.portalforembroidery.model.entity.PostEntity;
 import ru.vsu.portalforembroidery.model.entity.UserEntity;
@@ -42,35 +37,35 @@ public class UserServiceImpl implements UserService, PaginationService<UserForLi
     private int defaultPageNumber;
     @Value("${pagination.defaultPageSize}")
     private int defaultPageSize;
+    @Value("${keycloak-admin.realm}")
+    private String keycloakRealm;
 
     private final PostService postService;
     private final FolderService folderService;
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final Keycloak keycloakClient;
     private final PostMapper postMapper;
     private final UserMapper userMapper;
+    private final DesignerProfileMapper designerProfileMapper;
 
-//    @Override
-//    @Transactional
-//    public int createUser(UserRegistrationDto userRegistrationDto, Provider provider) {
-//        if (userRepository.findByEmail(userRegistrationDto.getEmail()).isPresent()) {
-//            log.warn("User with email = {} hasn't been created. Such user already exists!", userRegistrationDto.getEmail());
-//            throw new EntityAlreadyExistsException("User already exists in the database!");
-//        }
-//        final String password = passwordEncoder.encode(userRegistrationDto.getPassword());
-//        final UserEntity userEntity = Optional.of(userRegistrationDto)
-//                .map(userMapper::userRegistrationDtoToUserEntityWithPassword)
-//                .map(user -> {
-//                    user.setImage(new byte[0]);
-//                    user.setRole(Role.of(userRegistrationDto.getRoleId())
-//                            .orElseThrow(() -> new EntityCreationException("User not created!")));
-//                    return userRepository.save(user);
-//                })
-//                .orElseThrow(() -> new EntityCreationException("User not created!"));
-//        log.info("User with id = {} has been created.", userEntity.getId());
-//        return userEntity.getId();
-//    }
+    @Override
+    @Transactional
+    public void becomeDesigner(int id, BecomeDesignerDto becomeDesignerDto) {
+        final var user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found!"));
+
+        if (user.getRole() == Role.DESIGNER) {
+            return;
+        }
+
+        user.setRole(Role.DESIGNER);
+
+        var designerProfile = designerProfileMapper.becomeDesignerDtoToDesignerProfileEntity(becomeDesignerDto);
+
+        user.addDesignerProfile(designerProfile);
+
+        userRepository.save(user);
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -89,21 +84,20 @@ public class UserServiceImpl implements UserService, PaginationService<UserForLi
         final UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found!"));
 
-        final String username = userDto.getUsername();
-        if (!Objects.equals(username, userEntity.getUsername()) && userRepository.existsByUsername(username)) {
-            log.warn("User with username = {} hasn't been updated. Such username already exists in the database!", username);
-            throw new EntityAlreadyExistsException("Such username already exists!");
-        }
+        userMapper.mergeUserEntityAndUserDto(userEntity, userDto);
 
-        if (userDto.getBase64StringImage().isEmpty()) {
-            userMapper.mergeUserEntityAndUserDtoWithoutPicture(userEntity, userDto);
-            userRepository.save(userEntity);
-            log.info("User with id = {} has been updated without picture.", id);
-        } else {
-            userMapper.mergeUserEntityAndUserDto(userEntity, userDto);
-            userRepository.save(userEntity);
-            log.info("User with id = {} has been updated with picture.", id);
-        }
+        var keycloakUser = keycloakClient
+                .realm(keycloakRealm)
+                .users()
+                .get(userEntity.getExternalId().toString());
+
+        var userRepresentation = userMapper.userDtoToUserRepresentation(userDto);
+
+        keycloakUser.update(userRepresentation);
+
+        userRepository.save(userEntity);
+
+        log.info("User with id = {} has been updated.", id);
     }
 
     @Override

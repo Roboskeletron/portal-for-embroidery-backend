@@ -1,12 +1,9 @@
 package ru.vsu.portalforembroidery.model.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,15 +12,22 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@PrimaryKeyJoinColumn(name = "user_id_ptr")
 @Entity(name = "designer_profiles")
 @Table(name = "designer_profiles")
-public class DesignerProfileEntity extends UserEntity {
+public class DesignerProfileEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "experienced_since")
     private LocalDateTime experiencedSince;
 
     @Column(name = "description")
     private String description;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 
 }

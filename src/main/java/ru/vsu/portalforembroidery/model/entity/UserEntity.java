@@ -50,4 +50,11 @@ public class UserEntity {
     @Column(name = "external_id")
     private UUID externalId;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private DesignerProfileEntity designerProfile;
+
+    public void addDesignerProfile(DesignerProfileEntity designerProfile) {
+        this.designerProfile = designerProfile;
+        designerProfile.setUser(this);
+    }
 }

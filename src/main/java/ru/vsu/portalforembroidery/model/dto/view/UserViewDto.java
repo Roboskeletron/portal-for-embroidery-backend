@@ -18,5 +18,6 @@ public class UserViewDto {
     private final String phoneNumber;
     private final String email;
     private final String role;
-
+    private final String experiencedSince;
+    private final String description;
 }

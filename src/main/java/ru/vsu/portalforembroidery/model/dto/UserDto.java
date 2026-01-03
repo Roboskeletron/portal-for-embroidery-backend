@@ -3,9 +3,12 @@ package ru.vsu.portalforembroidery.model.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.*;
+import ru.vsu.portalforembroidery.annotation.DesignerProfilePropertiesRequired;
 import ru.vsu.portalforembroidery.annotation.ImageValid;
 
 import jakarta.validation.constraints.*;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -13,6 +16,7 @@ import jakarta.validation.constraints.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @JsonDeserialize(builder = UserDto.UserDtoBuilder.class)
+@DesignerProfilePropertiesRequired
 public class UserDto {
 
     @NotNull(message = "Username is null.")
@@ -43,6 +47,10 @@ public class UserDto {
     @NotBlank(message = "Email is blank.")
     @Email(message = "Email invalid.")
     private final String email;
+
+    private final LocalDateTime experiencedSince;
+
+    private final String description;
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class UserDtoBuilder {
