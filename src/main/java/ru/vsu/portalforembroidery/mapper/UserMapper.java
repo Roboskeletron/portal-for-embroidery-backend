@@ -1,5 +1,6 @@
 package ru.vsu.portalforembroidery.mapper;
 
+import org.keycloak.representations.idm.UserRepresentation;
 import org.mapstruct.*;
 import ru.vsu.portalforembroidery.model.Role;
 import ru.vsu.portalforembroidery.model.dto.UserDto;
@@ -8,6 +9,8 @@ import ru.vsu.portalforembroidery.model.dto.view.UserViewDto;
 import ru.vsu.portalforembroidery.model.entity.UserEntity;
 
 import java.util.Base64;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -45,5 +48,17 @@ public interface UserMapper {
 
         userEntity.getDesignerProfile().setDescription(userDto.getDescription());
         userEntity.getDesignerProfile().setExperiencedSince(userDto.getExperiencedSince());
+    }
+
+    @Mapping(target = "username", ignore = true)
+    UserRepresentation userDtoToUserRepresentation(UserDto userDto);
+
+    @AfterMapping
+    default void handlePhone(@MappingTarget UserRepresentation userRepresentation, UserDto userDto) {
+        if (userRepresentation.getAttributes() == null) {
+            userRepresentation.setAttributes(new HashMap<>());
+        }
+
+        userRepresentation.getAttributes().put("phone", Collections.singletonList(userDto.getPhoneNumber()));
     }
 }

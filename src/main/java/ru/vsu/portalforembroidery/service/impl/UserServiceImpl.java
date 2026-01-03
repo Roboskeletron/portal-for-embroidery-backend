@@ -2,6 +2,8 @@ package ru.vsu.portalforembroidery.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,11 +46,14 @@ public class UserServiceImpl implements UserService, PaginationService<UserForLi
     private int defaultPageNumber;
     @Value("${pagination.defaultPageSize}")
     private int defaultPageSize;
+    @Value("${keycloak-admin.realm}")
+    private String keycloakRealm;
 
     private final PostService postService;
     private final FolderService folderService;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final Keycloak keycloakClient;
     private final PostMapper postMapper;
     private final UserMapper userMapper;
     private final DesignerProfileMapper designerProfileMapper;
@@ -89,6 +94,15 @@ public class UserServiceImpl implements UserService, PaginationService<UserForLi
                 .orElseThrow(() -> new EntityNotFoundException("User not found!"));
 
         userMapper.mergeUserEntityAndUserDto(userEntity, userDto);
+
+        var keycloakUser = keycloakClient
+                .realm(keycloakRealm)
+                .users()
+                .get(userEntity.getExternalId().toString());
+
+        var userRepresentation = userMapper.userDtoToUserRepresentation(userDto);
+
+        keycloakUser.update(userRepresentation);
 
         userRepository.save(userEntity);
 

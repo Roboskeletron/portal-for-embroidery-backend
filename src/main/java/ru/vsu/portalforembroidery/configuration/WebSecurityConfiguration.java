@@ -11,8 +11,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import ru.vsu.portalforembroidery.converter.UserProvisioningJwtAuthenticationConverter;
 import ru.vsu.portalforembroidery.repository.UserRepository;
@@ -31,11 +29,6 @@ import ru.vsu.portalforembroidery.repository.UserRepository;
 @EnableMethodSecurity
 @EnableWebSecurity
 public class WebSecurityConfiguration {
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity, UserRepository userRepository) throws Exception {
         httpSecurity.cors(AbstractHttpConfigurer::disable)
