@@ -3,10 +3,7 @@ package ru.vsu.portalforembroidery.service;
 import org.springframework.data.domain.Pageable;
 import ru.vsu.portalforembroidery.model.dto.DesignDto;
 import ru.vsu.portalforembroidery.model.dto.DesignUpdateDto;
-import ru.vsu.portalforembroidery.model.dto.view.DesignForListDto;
-import ru.vsu.portalforembroidery.model.dto.view.DesignViewDto;
-import ru.vsu.portalforembroidery.model.dto.view.FileForListDto;
-import ru.vsu.portalforembroidery.model.dto.view.ViewListPage;
+import ru.vsu.portalforembroidery.model.dto.view.*;
 
 import java.util.List;
 
@@ -33,5 +30,7 @@ public interface DesignService {
     int numberOfDesigns();
 
     int numberOfDesignsByFolder(int folderId);
+
+    List<TagViewDto> getDesignTags(int id);
 
 }

@@ -3,8 +3,10 @@ server:
   port: ${SERVER_PORT:8080}
   servlet:
     context-path: /
+  forward-headers-strategy: framework
 spring:
   security:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:5173}
     oauth2:
       resourceserver:
         jwt:
