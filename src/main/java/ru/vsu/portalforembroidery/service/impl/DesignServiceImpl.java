@@ -10,12 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.vsu.portalforembroidery.exception.EntityCreationException;
 import ru.vsu.portalforembroidery.exception.EntityNotFoundException;
 import ru.vsu.portalforembroidery.mapper.DesignMapper;
+import ru.vsu.portalforembroidery.mapper.TagMapper;
 import ru.vsu.portalforembroidery.model.dto.DesignDto;
 import ru.vsu.portalforembroidery.model.dto.DesignUpdateDto;
-import ru.vsu.portalforembroidery.model.dto.view.DesignForListDto;
-import ru.vsu.portalforembroidery.model.dto.view.DesignViewDto;
-import ru.vsu.portalforembroidery.model.dto.view.FileForListDto;
-import ru.vsu.portalforembroidery.model.dto.view.ViewListPage;
+import ru.vsu.portalforembroidery.model.dto.view.*;
 import ru.vsu.portalforembroidery.model.entity.DesignEntity;
 import ru.vsu.portalforembroidery.model.entity.DesignerProfileEntity;
 import ru.vsu.portalforembroidery.model.entity.FolderEntity;
@@ -45,6 +43,7 @@ public class DesignServiceImpl implements DesignService, PaginationService<Desig
     private final FolderRepository folderRepository;
     private final DesignerProfileRepository designerProfileRepository;
     private final DesignMapper designMapper;
+    private final TagMapper tagMapper;
 
     @Override
     @Transactional
@@ -187,6 +186,17 @@ public class DesignServiceImpl implements DesignService, PaginationService<Desig
         final long numberOfDesigns = designRepository.countByFolderId(folderId);
         log.info("There have been found {} designs.", numberOfDesigns);
         return (int) numberOfDesigns;
+    }
+
+    @Override
+    public List<TagViewDto> getDesignTags(int id) {
+        final var designEntity = designRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Design not found!"));
+
+        return designEntity.getTags()
+                .stream()
+                .map(tagMapper::tagEntityToTagViewDto)
+                .toList();
     }
 
 }

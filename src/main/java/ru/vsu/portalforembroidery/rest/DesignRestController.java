@@ -10,6 +10,8 @@ import ru.vsu.portalforembroidery.model.dto.view.*;
 import ru.vsu.portalforembroidery.service.DesignService;
 
 import jakarta.validation.Valid;
+
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -52,4 +54,8 @@ public class DesignRestController {
         return designService.getFileViewListPage(id, allParams.get("page"), allParams.get("size"));
     }
 
+    @GetMapping("/{id}/tags")
+    public ResponseEntity<List<TagViewDto>> getDesignTags(@PathVariable final int id) {
+        return ResponseEntity.ok(designService.getDesignTags(id));
+    }
 }
